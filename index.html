@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iOS Config App</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Noto+Sans+Nag+Mundari:wght@400..700&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+            display: flex;
+            flex-direction: column; /* Allow footer to stay at the bottom */
+            height: 100vh;
+            font-family: 'Noto Sans Nag Mundari', sans-serif;
+            overflow: hidden;
+        }
+
+        /* Styling for money signs */
+        .money-sign {
+            font-family: 'Arimo', sans-serif;
+            display: none;
+        }
+
+        .container {
+            flex: 1; /* Allow container to take available space */
+            width: 100%;
+            max-width: 430px;
+            height: 100vh;
+            background-color: #f2f2f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease, opacity 0.3s ease, border-radius 0.3s ease;
+        }
+
+        .container.zoom-out {
+            transform: scale(0.95);
+            opacity: 0.7;
+            border-radius: 20px;
+        }
+
+        .header {
+            height: 60px;
+            width: 100%;
+            max-width: 430px;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            box-sizing: border-box;
+            position: fixed;
+            top: 0;
+            border-top-right-radius: 0;
+            border-top-left-radius: 0;
+            transition: border-radius 0.3s ease;
+        }
+
+        .container.zoom-out .header {
+            border-top-right-radius: 20px;
+            border-top-left-radius: 20px;
+        }
+
+        .header img {
+            height: 30px;
+            margin-right: -30px;
+        }
+
+        .header .header-text {
+            font-size: 20px;
+            font-weight: 600;
+            color: #0c2074;
+            flex: 1;
+            text-align: center;
+        }
+
+        .box {
+            margin-top: 60px;
+            width: 100%;
+            height: 80px;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .search {
+            background-color: #f2f2f5;
+            width: 90%;
+            height: 45px;
+            border-radius: 50px;
+            text-align: left;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+        }
+
+        .Search-text {
+            font-size: 16px;
+            width: 190px;
+            margin-left: 12px;
+            color: #1e50c9;
+            letter-spacing: -0.2px;
+            -webkit-font-smoothing: antialiased;
+        } 
+
+        .search-icon {
+            background-image: url('');
+            background-size: cover;
+            width: 46px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: #0a41c5;
+        }
+
+        .imgc {
+            background-image: url('https://i.ibb.co/mBZBjBv/search.png');
+            background-size: cover;
+            margin-left: -241px;
+            width: 30px;
+            height: 30px;
+            position: relative;
+        }
+
+        .micicon {
+            width: 17px;
+            height: 17px;
+            background-image: url('https://i.ibb.co/3MsY6wQ/microphone-342.png');
+            background-size: cover;
+            margin-left: 82%;
+            position: relative;
+        }
+
+        .date-display {
+            color: rgb(62, 72, 84);
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: -90px;
+            align-self: flex-start;
+            margin-left: 25px;
+        }
+
+        .welcomeback {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 430%;
+            height: 110px;
+        }
+
+        .welcome-user {
+            color: #0c2074;
+            font-size: 30px;
+            font-weight: 700;
+            margin-top: 0px;
+            align-self: flex-start;
+            margin-left: 25px;
+        }
+
+        .checknsav {
+            color: rgb(62, 72, 84);
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 45px;
+            align-self: flex-start;
+            margin-left: 25px;
+        }
+
+        .slide-menu {
+            position: fixed;
+            bottom: -700px;
+            left: 0%;
+            width: 100%;
+            max-width: 430px;
+            height: 70%;
+            background-color: #f2f2f5;
+            z-index: 10;
+            transition: bottom 0.3s ease;
+            padding: 20px;
+            box-sizing: border-box;
+            border-top-right-radius: 20px;
+            border-top-left-radius: 20px;
+        }
+
+        .menu-open {
+            bottom: 0;
+        }
+
+        .name-edit-container {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .name-edit-label {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .name-edit-input {
+            width: 100%;
+            max-width: 530px;
+            height: 40px;
+            font-size: 16px;
+            border: none; /* Remove all borders */
+            border-bottom: 1px solid #ccc; /* Add bottom border */
+            border-radius: 0; /* Ensure no rounded corners */
+            background-color: transparent;
+        }
+
+        .save-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 8px 15px;
+            background-color: #0a41c5;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .save-button.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .save-button:hover {
+            background-color: #083b9b;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            max-width: 430px;
+            background-color: #fff; /* Optional: background color if needed */
+            text-align: center; /* Center align the image */
+            border-top-right-radius: 5px;
+            border-top-left-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        footer img {
+            width: 100%; /* Make the image span the full width */
+            max-width: 430px;
+            height: auto; /* Maintain aspect ratio */
+            align-content: center;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://i.ibb.co/cc42CdF/Menu.png" alt="Menu Icon">
+            <div class="header-text" id="accounts-text">Accounts</div>
+        </div>
+        <div class="box">
+            <div class="search">
+                <div class="search-icon"></div>
+                <div class="Search-text">U.S. Bank Smart Assistant<span class="money-sign">$</span></div>
+                <div class="imgc"></div>
+                <div class="micicon"></div>
+            </div>
+        </div>
+        <div class="welcomeback"></div>
+        <div class="date-display" id="date-display"></div>
+        <div class="welcome-user" id="welcome-user">Welcome, User.</div>
+        <div class="checknsav">CHECKING & SAVINGS</div> <!-- New element -->
+    </div>
+    <div class="slide-menu">
+        <button class="save-button" id="save-button">Save</button>
+        <div class="name-edit-container">
+            <label for="name-edit-input" class="name-edit-label">Name</label>
+            <input type="text" id="name-edit-input" class="name-edit-input" value="User">
+        </div>
+    </div>
+    <footer>
+        <img src="https://i.ibb.co/5jKmF6N/image.png" alt="Footer Image">
+    </footer>
+
+    <script>
+        function updateDate() {
+            const dateDisplay = document.getElementById('date-display');
+            const options = { weekday: 'long', month: 'long', day: 'numeric' };
+            const now = new Date();
+            const formattedDate = now.toLocaleDateString('en-US', options).toUpperCase();
+            dateDisplay.textContent = formattedDate;
+        }
+
+        updateDate();
+
+        const accountsText = document.getElementById('accounts-text');
+        const slideMenu = document.querySelector('.slide-menu');
+        const container = document.querySelector('.container');
+        const nameEditInput = document.getElementById('name-edit-input');
+        const welcomeUserText = document.getElementById('welcome-user');
+        const saveButton = document.getElementById('save-button');
+
+        accountsText.addEventListener('click', () => {
+            slideMenu.classList.add('menu-open');
+            container.classList.add('zoom-out');
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!slideMenu.contains(event.target) && event.target !== accountsText) {
+                slideMenu.classList.remove('menu-open');
+                container.classList.remove('zoom-out');
+            }
+        });
+
+        nameEditInput.addEventListener('input', () => {
+            if (nameEditInput.value.trim()) {
+                saveButton.classList.add('show');
+            } else {
+                saveButton.classList.remove('show');
+            }
+        });
+
+        saveButton.addEventListener('click', () => {
+            const newName = nameEditInput.value.trim();
+            if (newName) {
+                welcomeUserText.textContent = `Welcome, ${newName}.`;
+                slideMenu.classList.remove('menu-open');
+                container.classList.remove('zoom-out');
+            }
+        });
+    </script>
+</body>
+</html>
