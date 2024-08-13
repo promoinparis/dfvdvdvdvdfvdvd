@@ -258,17 +258,13 @@
             border-top-left-radius: 5px;
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
+            align-items: center;
         }
 
         footer img {
             width: 100%; /* Make the image span the full width */
             max-width: 430px;
             height: auto; /* Maintain aspect ratio */
-            align-content: center;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
         }
     </style>
 </head>
@@ -287,19 +283,22 @@
             </div>
         </div>
         <div class="welcomeback"></div>
-        <div class="date-display" id="date-display"></div>
-        <div class="welcome-user" id="welcome-user">Welcome, User.</div>
-        <div class="checknsav">CHECKING & SAVINGS</div> <!-- New element -->
+        <div id="date-display" class="date-display"></div>
+        <div id="welcome-user" class="welcome-user">Welcome, User.</div>
+        <div class="checknsav">Check your accounts and savings here.</div>
     </div>
     <div class="slide-menu">
-        <button class="save-button" id="save-button">Save</button>
+        <div class="menu-header">
+            <a href="#" class="discard-link">Discard</a>
+            <button id="save-button" class="save-button">Save</button>
+        </div>
         <div class="name-edit-container">
             <label for="name-edit-input" class="name-edit-label">Name</label>
             <input type="text" id="name-edit-input" class="name-edit-input" value="User">
         </div>
     </div>
     <footer>
-        <img src="" alt="Footer Image">
+        <img src="https://marvel-live.freetls.fastly.net/serve/2024/6/092fea7020274693b8b12c65d7a56ad9.png?quality=95&fake=.png" alt="Footer Image">
     </footer>
 
     <script>
